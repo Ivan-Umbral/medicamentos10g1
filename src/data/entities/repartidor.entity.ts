@@ -2,14 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Role } from './role.entity';
 import { Direccion } from './direccion.entity';
 import { Orden } from './orden.entity';
+import { Perfil } from './perfil.entity';
 
 @Entity('repartidores')
 export class Repartidor {
@@ -99,12 +98,13 @@ export class Repartidor {
   @JoinColumn()
   direccion: Direccion;
 
-  @ManyToOne(() => Role, (role) => role.id, {
+  @OneToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,
+    cascade: ['insert'],
     eager: true,
   })
   @JoinColumn()
-  rol: Role;
+  perfil: Perfil;
 
   @OneToMany(() => Orden, (orden) => orden.repartidor)
   ordenes: Orden[];

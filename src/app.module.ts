@@ -4,9 +4,13 @@ import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { EstadoModule } from './app/estado/estado.module';
+import { MapperModule } from './common/mapper/mapper.module';
 
 @Module({
   imports: [
+    EstadoModule,
+    MapperModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

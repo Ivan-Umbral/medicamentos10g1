@@ -1,7 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Farmacia } from './farmacia.entity';
-import { Repartidor } from './repartidor.entity';
-import { Usuario } from './usuario.entity';
+import { Perfil } from './perfil.entity';
 
 @Entity('roles')
 export class Role {
@@ -25,12 +23,6 @@ export class Role {
   })
   descripcion?: string;
 
-  @OneToMany(() => Farmacia, (farmacia) => farmacia.rol)
-  farmacias: Farmacia[];
-
-  @OneToMany(() => Repartidor, (repartidor) => repartidor.rol)
-  repartidores: Repartidor[];
-
-  @OneToMany(() => Usuario, (user) => user.rol)
-  usuarios: Usuario[];
+  @OneToMany(() => Perfil, (perfil) => perfil.rol)
+  perfiles: Perfil[];
 }

@@ -2,15 +2,14 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Direccion } from './direccion.entity';
-import { Role } from './role.entity';
 import { Carrito } from './carrito.entity';
 import { Orden } from './orden.entity';
+import { Perfil } from './perfil.entity';
 
 @Entity('usuarios')
 export class Usuario {
@@ -43,29 +42,6 @@ export class Usuario {
   @Column({
     type: 'varchar',
     nullable: false,
-    unique: true,
-    length: 150,
-  })
-  correoElectronico: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: true,
-    length: 80,
-  })
-  username: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    length: 255,
-  })
-  contrasena: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
     length: 10,
   })
   telefono: string;
@@ -78,12 +54,13 @@ export class Usuario {
   @JoinColumn()
   direccion: Direccion;
 
-  @ManyToOne(() => Role, (role) => role.id, {
+  @OneToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,
+    cascade: ['insert'],
     eager: true,
   })
   @JoinColumn()
-  rol: Role;
+  perfil: Perfil;
 
   @OneToMany(() => Carrito, (carrito) => carrito.usuario)
   productosCarrito: Carrito[];

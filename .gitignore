@@ -35,3 +35,6 @@ lerna-debug.log*
 
 # ORM
 ormconfig.json
+
+# migrations
+/src/data/migrations

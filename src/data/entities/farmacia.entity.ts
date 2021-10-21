@@ -2,12 +2,11 @@ import {
   Column,
   Entity,
   JoinColumn,
-  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Role } from './role.entity';
 import { Direccion } from './direccion.entity';
+import { Perfil } from './perfil.entity';
 
 @Entity('farmacias')
 export class Farmacia {
@@ -69,12 +68,13 @@ export class Farmacia {
   })
   telefono: string;
 
-  @ManyToOne(() => Role, (role) => role.id, {
+  @OneToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,
+    cascade: ['insert'],
     eager: true,
   })
   @JoinColumn()
-  rol: Role;
+  perfil: Perfil;
 
   @OneToOne(() => Direccion, (direccion) => direccion.id, {
     nullable: false,
