@@ -6,11 +6,24 @@ import configuration from './config/configuration';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { EstadoModule } from './app/estado/estado.module';
 import { MapperModule } from './common/mapper/mapper.module';
+import { PerfilModule } from './app/perfil/perfil.module';
+import { AuthModule } from './app/auth/auth.module';
+import { UsuarioModule } from './app/usuario/usuario.module';
+import {
+  DATABASE_HOST,
+  DATABASE_PORT,
+  DATABASE_USERNAME,
+  DATABASE_PASSWORD,
+  DATABASE_DATABASE_NAME,
+} from './config/constants.config';
 
 @Module({
   imports: [
+    AuthModule,
     EstadoModule,
     MapperModule,
+    PerfilModule,
+    UsuarioModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
@@ -19,11 +32,11 @@ import { MapperModule } from './common/mapper/mapper.module';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get<string>('database.host'),
-        port: configService.get<number>('database.port'),
-        username: configService.get<string>('database.username'),
-        password: configService.get<string>('database.password'),
-        database: configService.get<string>('database.database'),
+        host: configService.get<string>(DATABASE_HOST),
+        port: configService.get<number>(DATABASE_PORT),
+        username: configService.get<string>(DATABASE_USERNAME),
+        password: configService.get<string>(DATABASE_PASSWORD),
+        database: configService.get<string>(DATABASE_DATABASE_NAME),
         entities: [__dirname + '/**/*.entity{.ts,.js}'],
         autoLoadEntities: true,
         synchronize: false,

@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Generated,
   JoinColumn,
   ManyToOne,
   OneToOne,
@@ -40,6 +41,12 @@ export class Perfil {
     length: 255,
   })
   contrasena: string;
+
+  @Generated('uuid')
+  @Column({
+    unique: true,
+  })
+  refreshToken: string;
 
   @ManyToOne(() => Role, (role) => role.id, {
     nullable: false,

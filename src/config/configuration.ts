@@ -7,4 +7,7 @@ export default () => ({
     password: process.env.DATABASE_PASSWORD || '1234',
     database: process.env.DATABASE_NAME || 'medicamentos10g1',
   },
+  jwt: {
+    secret: process.env.JWT_SECRET || 'jwt-super-secret-0129jskdmxdxd',
+  },
 });
