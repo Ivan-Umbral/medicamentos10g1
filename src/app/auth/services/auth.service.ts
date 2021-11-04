@@ -79,25 +79,25 @@ export class AuthService {
   }
 
   private getUserPayload(userDTO: PerfilAuthReadDTO): PerfilAuthPayload {
-    const { farmacia, repartidor, usuario, ...rest } = userDTO;
+    const { farmacias, repartidores, usuarios, ...rest } = userDTO;
     const userPayload: PerfilAuthPayload = {
       id: rest.id,
       correoElectronico: rest.correoElectronico,
       username: rest.username,
       refreshToken: rest.refreshToken,
       rolId: rest.rol.id,
-      ownerId: this.getOwnerId(farmacia, repartidor, usuario),
+      ownerId: this.getOwnerId(farmacias, repartidores, usuarios),
     };
     return userPayload;
   }
 
   private getOwnerId(
-    farmacia: FarmaciaAuthReadDTO,
-    repartidor: RepartidorAuthReadDTO,
-    usuario: UsuarioAuthReadDTO,
+    farmacias: FarmaciaAuthReadDTO[],
+    repartidores: RepartidorAuthReadDTO[],
+    usuarios: UsuarioAuthReadDTO[],
   ): number {
-    if (farmacia) return farmacia.id;
-    else if (repartidor) return repartidor.id;
-    return usuario.id;
+    if (farmacias && farmacias.length > 0) return farmacias[0].id;
+    else if (repartidores && repartidores.length > 0) return repartidores[0].id;
+    return usuarios[0].id;
   }
 }

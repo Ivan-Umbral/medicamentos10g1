@@ -2,8 +2,8 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Direccion } from './direccion.entity';
@@ -90,17 +90,21 @@ export class Repartidor {
   })
   contrasena: string;
 
-  @OneToOne(() => Direccion, (direccion) => direccion.id, {
+  @ManyToOne(() => Direccion, (direccion) => direccion.id, {
     nullable: false,
     eager: true,
-    cascade: ['insert'],
+    cascade: ['insert', 'remove', 'update'],
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn()
   direccion: Direccion;
 
-  @OneToOne(() => Perfil, (perfil) => perfil.id, {
+  @ManyToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,
-    cascade: ['insert'],
+    cascade: ['insert', 'remove', 'update'],
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
     eager: true,
   })
   @JoinColumn()

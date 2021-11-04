@@ -25,15 +25,15 @@ export class PerfilAuthReadDTO {
 
   @Expose()
   @Type(() => UsuarioAuthReadDTO)
-  usuario?: UsuarioAuthReadDTO;
+  usuarios?: UsuarioAuthReadDTO[];
 
   @Expose()
   @Type(() => FarmaciaAuthReadDTO)
-  farmacia?: FarmaciaAuthReadDTO;
+  farmacias?: FarmaciaAuthReadDTO[];
 
   @Expose()
   @Type(() => RepartidorAuthReadDTO)
-  repartidor?: RepartidorAuthReadDTO;
+  repartidores?: RepartidorAuthReadDTO[];
 }
 
 export class PerfilAuthPayload {

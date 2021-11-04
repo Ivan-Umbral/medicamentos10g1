@@ -4,6 +4,7 @@ import { DireccionCreateDTO } from '../../../direccion/models/dto/direccion.dto'
 import {
   IsAlpha,
   IsNotEmpty,
+  IsOptional,
   IsPhoneNumber,
   ValidateNested,
 } from 'class-validator';
@@ -21,6 +22,7 @@ export class UsuarioCreateDTO {
   @IsNotEmpty()
   apellidoPaterno: string;
 
+  @IsOptional()
   @IsAlpha()
   apellidoMaterno?: string;
 

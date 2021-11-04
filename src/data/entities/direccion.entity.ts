@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  OneToOne,
   PrimaryGeneratedColumn,
   ManyToOne,
   JoinColumn,
@@ -12,6 +11,7 @@ import { Usuario } from './usuario.entity';
 import { Estado } from './estado.entity';
 import { Municipio } from './municipio.entity';
 import { Colonia } from './colonia.entity';
+import { OneToMany } from 'typeorm';
 
 @Entity('direcciones')
 export class Direccion {
@@ -57,12 +57,12 @@ export class Direccion {
   @JoinColumn()
   colonia: Colonia;
 
-  @OneToOne(() => Farmacia, (farmacia) => farmacia.direccion)
-  farmacia: Farmacia;
+  @OneToMany(() => Farmacia, (farmacia) => farmacia.direccion)
+  farmacias: Farmacia[];
 
-  @OneToOne(() => Repartidor, (repartidor) => repartidor.direccion)
-  repartidor: Repartidor;
+  @OneToMany(() => Repartidor, (repartidor) => repartidor.direccion)
+  repartidores: Repartidor[];
 
-  @OneToOne(() => Usuario, (user) => user.direccion)
-  usuario: Usuario;
+  @OneToMany(() => Usuario, (user) => user.direccion)
+  usuarios: Usuario[];
 }

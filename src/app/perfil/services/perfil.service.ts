@@ -13,7 +13,7 @@ export class PerfilService {
   public async findOneAuth(username: string): Promise<Perfil | undefined> {
     return this._perfilRepository.findOne({
       where: { username },
-      relations: ['farmacia', 'repartidor', 'usuario'],
+      relations: ['farmacias', 'repartidores', 'usuarios'],
     });
   }
 
@@ -25,7 +25,7 @@ export class PerfilService {
         username: refresTokenObj.username,
         refreshToken: refresTokenObj.refreshToken,
       },
-      relations: ['farmacia', 'repartidor', 'usuario'],
+      relations: ['farmacias', 'repartidores', 'usuarios'],
     });
   }
 

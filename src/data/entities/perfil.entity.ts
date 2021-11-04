@@ -4,13 +4,13 @@ import {
   Generated,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Role } from './role.entity';
 import { Usuario } from './usuario.entity';
 import { Repartidor } from './repartidor.entity';
 import { Farmacia } from './farmacia.entity';
+import { OneToMany } from 'typeorm';
 
 @Entity('perfiles')
 export class Perfil {
@@ -55,12 +55,12 @@ export class Perfil {
   @JoinColumn()
   rol: Role;
 
-  @OneToOne(() => Usuario, (user) => user.perfil)
-  usuario: Usuario;
+  @OneToMany(() => Usuario, (user) => user.perfil)
+  usuarios: Usuario[];
 
-  @OneToOne(() => Repartidor, (repartidor) => repartidor.perfil)
-  repartidor: Repartidor;
+  @OneToMany(() => Repartidor, (repartidor) => repartidor.perfil)
+  repartidores: Repartidor[];
 
-  @OneToOne(() => Farmacia, (farmacia) => farmacia.perfil)
-  farmacia: Farmacia;
+  @OneToMany(() => Farmacia, (farmacia) => farmacia.perfil)
+  farmacias: Farmacia[];
 }

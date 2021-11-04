@@ -2,7 +2,7 @@ import {
   Column,
   Entity,
   JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Direccion } from './direccion.entity';
@@ -68,18 +68,22 @@ export class Farmacia {
   })
   telefono: string;
 
-  @OneToOne(() => Perfil, (perfil) => perfil.id, {
+  @ManyToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,
-    cascade: ['insert'],
+    cascade: ['insert', 'remove', 'update'],
     eager: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn()
   perfil: Perfil;
 
-  @OneToOne(() => Direccion, (direccion) => direccion.id, {
+  @ManyToOne(() => Direccion, (direccion) => direccion.id, {
     nullable: false,
     eager: true,
-    cascade: ['insert'],
+    cascade: ['insert', 'remove', 'update'],
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   @JoinColumn()
   direccion: Direccion;
