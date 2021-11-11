@@ -16,10 +16,12 @@ import {
   DATABASE_PASSWORD,
   DATABASE_DATABASE_NAME,
 } from './config/constants.config';
+import { PaisModule } from './app/pais/pais.module';
 
 @Module({
   imports: [
     AuthModule,
+    PaisModule,
     EstadoModule,
     MapperModule,
     PerfilModule,
