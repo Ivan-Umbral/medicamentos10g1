@@ -8,7 +8,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { API_URL } from 'src/common/constants/routes.constants';
+import { API_URL } from '../../common/constants/routes.constants';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthService } from './services/auth.service';
 import { AuthLoginDTO } from './models/dto/auth-login.dto';

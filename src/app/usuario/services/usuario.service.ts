@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from '../../../data/entities/usuario.entity';
 import { getConnection, Repository } from 'typeorm';
 import { UsuarioCreateDTO } from '../models/dto/usuario.dto';
-import { RoleEnum } from 'src/data/enums/role.enum';
+import { RoleEnum } from '../../../data/enums/role.enum';
 import { hashSync } from 'bcrypt';
-import { Role } from 'src/data/entities/role.entity';
+import { Role } from '../../../data/entities/role.entity';
 import {
   getEstadoRealtionIdObject,
   getColoniaRealtionIdObject,
   getMunicipioRealtionIdObject,
-} from 'src/common/helpers';
+} from '../../../common/helpers';
 import { AuthLoginResponseDTO } from 'src/app/auth/models/dto';
 import { AuthService } from '../../auth/services/auth.service';
 import { PerfilAuthPayload } from '../../perfil/models/dto/perfil.dto';

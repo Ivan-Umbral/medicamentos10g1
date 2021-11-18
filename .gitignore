@@ -38,3 +38,6 @@ ormconfig.json
 
 # migrations
 /src/data/migrations
+
+#package-lock.json
+package-lock.json

@@ -11,7 +11,7 @@ import {
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
-import { API_URL } from 'src/common/constants/routes.constants';
+import { API_URL } from '../../common/constants/routes.constants';
 import { UsuarioService } from './services/usuario.service';
 import { UsuarioCreateDTO } from './models/dto/usuario.dto';
 import { ApiTags } from '@nestjs/swagger';

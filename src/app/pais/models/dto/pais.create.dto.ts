@@ -4,12 +4,12 @@ import {
   IsOnlyLetters,
   IsSqlInjection,
   IsTwoBlanks,
-} from 'src/common/security/custom-validations';
+} from '../../../../common/security/custom-validations';
 import {
   SQL_INJECTION_MESSAGE,
   TWO_BLANKS_MESSAGE,
   ONLY_LETTERS_MESSAGE,
-} from 'src/common/security/validation-messages/validation-messages';
+} from '../../../../common/security/validation-messages/validation-messages';
 
 export class PaisCreateDTO {
   @IsSqlInjection({ message: SQL_INJECTION_MESSAGE })

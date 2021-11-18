@@ -10,7 +10,8 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { API_URL } from 'src/common/constants/routes.constants';
+// import { API_URL } from 'src/common/constants/routes.constants';
+import { API_URL } from '../../common/constants/routes.constants';
 import { ApiTags } from '@nestjs/swagger';
 import { PaisService } from './services/pais.service';
 import { PaisCreateDTO } from './models/dto/pais.create.dto';
