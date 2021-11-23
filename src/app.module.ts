@@ -17,6 +17,7 @@ import {
   DATABASE_DATABASE_NAME,
 } from './config/constants.config';
 import { PaisModule } from './app/pais/pais.module';
+import { CapacitacionModule } from './app/capacitacion/capacitacion.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { PaisModule } from './app/pais/pais.module';
     MapperModule,
     PerfilModule,
     UsuarioModule,
+    CapacitacionModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,
