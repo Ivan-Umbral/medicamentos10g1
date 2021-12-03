@@ -3,6 +3,10 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Perfil } from '../../../data/entities/perfil.entity';
 import { Repository, UpdateResult } from 'typeorm';
 import { RefreshTokenRequestDTO } from 'src/app/auth/models/dto';
+import {
+  IUsernameExistsDTO,
+  ICorreoExistsDTO,
+} from '../models/interfaces/perfil.interface';
 
 @Injectable()
 export class PerfilService {
@@ -34,5 +38,33 @@ export class PerfilService {
     refreshToken: string,
   ): Promise<UpdateResult> {
     return this._perfilRepository.update(id, { refreshToken });
+  }
+
+  public async usernameExists(username: string): Promise<IUsernameExistsDTO> {
+    try {
+      const perfil = await this._perfilRepository.findOne({
+        where: { username },
+      });
+      if (perfil) {
+        return { usernameExists: true };
+      }
+      return { usernameExists: false };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  public async emailExists(email: string): Promise<ICorreoExistsDTO> {
+    try {
+      const perfil = await this._perfilRepository.findOne({
+        where: { correoElectronico: email },
+      });
+      if (perfil) {
+        return { correoExists: true };
+      }
+      return { correoExists: false };
+    } catch (error) {
+      return null;
+    }
   }
 }

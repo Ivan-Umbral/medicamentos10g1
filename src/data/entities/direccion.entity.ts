@@ -41,18 +41,21 @@ export class Direccion {
 
   @ManyToOne(() => Estado, (estado) => estado.id, {
     nullable: false,
+    eager: true,
   })
   @JoinColumn()
   estado: Estado;
 
   @ManyToOne(() => Municipio, (municipio) => municipio.id, {
     nullable: false,
+    eager: true,
   })
   @JoinColumn()
   municipio: Municipio;
 
   @ManyToOne(() => Colonia, (colonia) => colonia.id, {
     nullable: false,
+    eager: true,
   })
   @JoinColumn()
   colonia: Colonia;

@@ -9,12 +9,20 @@ import {
   Param,
   ParseIntPipe,
   Res,
+  UseGuards,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { API_URL } from '../../common/constants/routes.constants';
 import { UsuarioService } from './services/usuario.service';
-import { UsuarioCreateDTO } from './models/dto/usuario.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  UsuarioCreateDTO,
+  UsuarioMovilCreateDTO,
+} from './models/dto/usuario.dto';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { RoleEnum } from '../../data/enums/role.enum';
+import { Roles } from '../../common/decotators/role.decorator';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { RoleGuard } from '../auth/guards/role.guard';
 
 @Controller(`${API_URL}/usuarios`)
 @ApiTags('Usuarios')
@@ -27,6 +35,19 @@ export class UsuarioController {
     if (response) {
       return response;
     }
+    throw new HttpException(
+      'Something went wrong',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  }
+
+  /* @ApiBearerAuth()
+  @Roles(RoleEnum.ADMIN, RoleEnum.USUARIO)
+  @UseGuards(JwtAuthGuard, RoleGuard) */
+  @Post('/movil')
+  public async createOneMovil(@Body() body: UsuarioMovilCreateDTO) {
+    const response = await this._usuarioService.createOneMovil(body);
+    if (response) return response;
     throw new HttpException(
       'Something went wrong',
       HttpStatus.INTERNAL_SERVER_ERROR,

@@ -47,14 +47,14 @@ export class Usuario {
   telefono: string;
 
   @ManyToOne(() => Direccion, (direccion) => direccion.id, {
-    nullable: false,
+    nullable: true,
     eager: true,
     cascade: ['insert', 'remove', 'update'],
     onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   })
   @JoinColumn()
-  direccion: Direccion;
+  direccion?: Direccion;
 
   @ManyToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,

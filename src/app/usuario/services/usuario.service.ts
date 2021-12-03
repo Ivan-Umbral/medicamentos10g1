@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from '../../../data/entities/usuario.entity';
 import { getConnection, Repository } from 'typeorm';
-import { UsuarioCreateDTO } from '../models/dto/usuario.dto';
+import {
+  UsuarioCreateDTO,
+  UsuarioMovilCreateDTO,
+} from '../models/dto/usuario.dto';
 import { RoleEnum } from '../../../data/enums/role.enum';
 import { hashSync } from 'bcrypt';
 import { Role } from '../../../data/entities/role.entity';
@@ -13,9 +16,9 @@ import {
 } from '../../../common/helpers';
 import { AuthLoginResponseDTO } from 'src/app/auth/models/dto';
 import { AuthService } from '../../auth/services/auth.service';
-import { PerfilAuthPayload } from '../../perfil/models/dto/perfil.dto';
 import { Direccion } from '../../../data/entities/direccion.entity';
 import { Perfil } from '../../../data/entities/perfil.entity';
+import { PerfilAuthPayload } from '../../perfil/models/dto/perfil.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -52,6 +55,28 @@ export class UsuarioService {
     }
   }
 
+  public async createOneMovil(
+    user: UsuarioMovilCreateDTO,
+  ): Promise<AuthLoginResponseDTO> {
+    try {
+      const userEntity = this._usuarioRepository.create(user);
+      const role = new Role();
+      role.id = RoleEnum.USUARIO;
+      userEntity.perfil.rol = role;
+      userEntity.perfil.contrasena = hashSync(userEntity.perfil.contrasena, 10);
+      const userDB = await this._usuarioRepository.save(userEntity);
+      if (userDB) {
+        const response = await this._authService.login(
+          this.createPerfilAuthPayload(userDB),
+        );
+        return response;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
+
   public async deleteOne(id: number): Promise<boolean> {
     const userExists = await this.userExists(id);
     if (!userExists) return false;
@@ -60,28 +85,41 @@ export class UsuarioService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
-      const userDeleted = await queryRunner.manager.delete(Usuario, id);
-      const direccionDeleted = await queryRunner.manager.delete(
-        Direccion,
-        usuario.direccion.id,
-      );
-      const perfilDeleted = await queryRunner.manager.delete(
-        Perfil,
-        usuario.perfil.id,
-      );
-      if (
-        userDeleted.affected > 0 &&
-        direccionDeleted.affected > 0 &&
-        perfilDeleted.affected > 0
-      ) {
-        await queryRunner.commitTransaction();
-        return true;
+      if (usuario.direccion) {
+        const userDeleted = await queryRunner.manager.delete(Usuario, id);
+        const direccionDeleted = await queryRunner.manager.delete(
+          Direccion,
+          usuario.direccion.id,
+        );
+        const perfilDeleted = await queryRunner.manager.delete(
+          Perfil,
+          usuario.perfil.id,
+        );
+        if (
+          userDeleted.affected > 0 &&
+          direccionDeleted.affected > 0 &&
+          perfilDeleted.affected > 0
+        ) {
+          await queryRunner.commitTransaction();
+          return true;
+        }
+        await queryRunner.rollbackTransaction();
+        return false;
+      } else {
+        const userDeleted = await queryRunner.manager.delete(Usuario, id);
+        const perfilDeleted = await queryRunner.manager.delete(
+          Perfil,
+          usuario.perfil.id,
+        );
+        if (userDeleted.affected > 0 && perfilDeleted.affected > 0) {
+          await queryRunner.commitTransaction();
+          return true;
+        }
+        await queryRunner.rollbackTransaction();
+        return false;
       }
-      await queryRunner.rollbackTransaction();
-      return false;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      console.log(error);
       return false;
     } finally {
       await queryRunner.release();

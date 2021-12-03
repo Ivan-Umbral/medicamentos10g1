@@ -41,29 +41,6 @@ export class Farmacia {
   @Column({
     type: 'varchar',
     nullable: false,
-    unique: true,
-    length: 150,
-  })
-  correoElectronico: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: true,
-    length: 80,
-  })
-  username: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    length: 255,
-  })
-  contrasena: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
     length: 10,
   })
   telefono: string;

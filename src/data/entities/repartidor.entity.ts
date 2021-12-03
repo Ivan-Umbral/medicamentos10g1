@@ -67,29 +67,6 @@ export class Repartidor {
   })
   telefono: string;
 
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: true,
-    length: 150,
-  })
-  correoElectronico: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    unique: true,
-    length: 80,
-  })
-  username: string;
-
-  @Column({
-    type: 'varchar',
-    nullable: false,
-    length: 255,
-  })
-  contrasena: string;
-
   @ManyToOne(() => Direccion, (direccion) => direccion.id, {
     nullable: false,
     eager: true,

@@ -18,15 +18,21 @@ import {
 } from './config/constants.config';
 import { PaisModule } from './app/pais/pais.module';
 import { CapacitacionModule } from './app/capacitacion/capacitacion.module';
+import { FarmaciaModule } from './app/farmacia/farmacia.module';
+import { MunicipioModule } from './app/municipio/municipio.module';
+import { ColoniaModule } from './app/colonia/colonia.module';
 
 @Module({
   imports: [
     AuthModule,
     PaisModule,
     EstadoModule,
+    MunicipioModule,
+    ColoniaModule,
     MapperModule,
     PerfilModule,
     UsuarioModule,
+    FarmaciaModule,
     CapacitacionModule,
     ConfigModule.forRoot({
       load: [configuration],
