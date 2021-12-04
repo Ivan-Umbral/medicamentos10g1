@@ -1,6 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  ManyToOne,
+  JoinColumn,
+} from 'typeorm';
 import { Carrito } from './carrito.entity';
 import { DetalleOrden } from './detalle-orden.entity';
+import { Farmacia } from './farmacia.entity';
 
 @Entity('medicamentos')
 export class Medicamento {
@@ -12,7 +20,7 @@ export class Medicamento {
   @Column({
     type: 'varchar',
     length: 100,
-    unique: true,
+    unique: false,
     nullable: false,
   })
   nombre: string;
@@ -46,13 +54,26 @@ export class Medicamento {
     type: 'datetime',
     nullable: false,
   })
-  caducidad: Date;
+  caducidad: string;
 
   @Column({
     type: 'text',
     nullable: true,
   })
   imagen?: string;
+
+  /* @Column({
+    type: 'int',
+    nullable: false,
+  })
+  farmaciaId: number; */
+
+  @ManyToOne(() => Farmacia, (farmacia) => farmacia.id, {
+    eager: true,
+    nullable: false,
+  })
+  @JoinColumn()
+  farmacia: Farmacia;
 
   @OneToMany(() => Carrito, (carrito) => carrito.medicamento)
   productosCarrito: Carrito[];

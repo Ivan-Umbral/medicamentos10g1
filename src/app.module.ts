@@ -21,6 +21,7 @@ import { CapacitacionModule } from './app/capacitacion/capacitacion.module';
 import { FarmaciaModule } from './app/farmacia/farmacia.module';
 import { MunicipioModule } from './app/municipio/municipio.module';
 import { ColoniaModule } from './app/colonia/colonia.module';
+import { MedicamentoModule } from './app/medicamento/medicamento.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { ColoniaModule } from './app/colonia/colonia.module';
     PerfilModule,
     UsuarioModule,
     FarmaciaModule,
+    MedicamentoModule,
     CapacitacionModule,
     ConfigModule.forRoot({
       load: [configuration],

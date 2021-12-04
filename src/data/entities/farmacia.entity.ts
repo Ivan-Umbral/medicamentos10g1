@@ -3,10 +3,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Direccion } from './direccion.entity';
 import { Perfil } from './perfil.entity';
+import { Medicamento } from './medicamento.entity';
 
 @Entity('farmacias')
 export class Farmacia {
@@ -44,6 +46,9 @@ export class Farmacia {
     length: 10,
   })
   telefono: string;
+
+  @OneToMany(() => Medicamento, (medicamento) => medicamento.farmacia)
+  medicamentos: Medicamento[];
 
   @ManyToOne(() => Perfil, (perfil) => perfil.id, {
     nullable: false,
