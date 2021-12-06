@@ -4,7 +4,11 @@ import { Orden } from '../../../data/entities/orden.entity';
 import { Repository } from 'typeorm';
 import { MapperService } from '../../../common/mapper/services/mapper.service';
 import { PagoService } from '../../pago/services/pago.service';
-import { FullOrdenReadDTO, OrdenWDetalleCreateDTO } from '../models/dto';
+import {
+  FullOrdenReadDTO,
+  OrdenDetalleFullReadDTO,
+  OrdenWDetalleCreateDTO,
+} from '../models/dto';
 import { Stripe } from 'stripe';
 import { format } from 'date-fns';
 import { Usuario } from '../../../data/entities/usuario.entity';
@@ -18,6 +22,59 @@ export class OrdenService {
     private _mapper: MapperService,
     private _pagoService: PagoService,
   ) {}
+
+  public async getOrdenesByUserId(userId: number): Promise<FullOrdenReadDTO[]> {
+    const usuario = new Usuario();
+    usuario.id = userId;
+    const ordenes = await this._ordenRepository.find({
+      where: { usuario },
+    });
+    if (ordenes) {
+      console.log(ordenes);
+      const ordenesDTO = this._mapper.toArrayDTO<FullOrdenReadDTO>(
+        ordenes,
+        FullOrdenReadDTO,
+      );
+      return ordenesDTO;
+    }
+    return null;
+  }
+
+  public async getOrdenByUserId(
+    userId: number,
+    ordenId: number,
+  ): Promise<OrdenDetalleFullReadDTO> {
+    try {
+      const ordenQuery = await this._ordenRepository
+        .createQueryBuilder('ordenes')
+        .innerJoinAndSelect('ordenes.detallesOrdenes', 'detalles-ordenes')
+        .innerJoinAndSelect('ordenes.usuario', 'usuarios')
+        .innerJoinAndSelect('detalles-ordenes.medicamento', 'medicamentos')
+        .innerJoinAndSelect('medicamentos.farmacia', 'farmacias')
+        .where('detalles-ordenes.ordenId = :ordenId', { ordenId })
+        .andWhere('ordenes.usuarioId = :userId', { userId })
+        .getOne();
+      /* const usuario = new Usuario();
+    const detalleOrden = new DetalleOrden();
+    const ordenJoin = new Orden();
+    ordenJoin.id = ordenId;
+    usuario.id = userId;
+    const orden = await this._ordenRepository.findOne({
+      relations: ['detallesOrdenes'],
+      where: { usuario },
+    }); */
+      if (ordenQuery) {
+        const ordenDetalleDTO = this._mapper.toDTO<OrdenDetalleFullReadDTO>(
+          ordenQuery,
+          OrdenDetalleFullReadDTO,
+        );
+        return ordenDetalleDTO;
+      }
+      return null;
+    } catch (error) {
+      return null;
+    }
+  }
 
   public async createOrderWithDetail(
     body: OrdenWDetalleCreateDTO,

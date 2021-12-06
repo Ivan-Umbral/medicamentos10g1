@@ -4,6 +4,8 @@ import {
   Get,
   HttpException,
   HttpStatus,
+  Param,
+  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -19,6 +21,31 @@ import { OrdenWDetalleCreateDTO } from './models/dto/orden-create.dto';
 @Controller(`${API_URL}/ordenes`)
 export class OrdenController {
   constructor(private _ordenService: OrdenService) {}
+
+  @Get('all/:usuarioId')
+  public async getOrdenesByUserId(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+  ) {
+    const ordenes = await this._ordenService.getOrdenesByUserId(usuarioId);
+    if (ordenes) return ordenes;
+    throw new HttpException(
+      'Something went wrong',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  }
+
+  @Get('one/:usuarioId/:orderId')
+  public async getOrdeneByUserId(
+    @Param('usuarioId', ParseIntPipe) usuarioId: number,
+    @Param('orderId', ParseIntPipe) orderId: number,
+  ) {
+    const orden = await this._ordenService.getOrdenByUserId(usuarioId, orderId);
+    if (orden) return orden;
+    throw new HttpException(
+      'Something went wrong',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  }
 
   @Post('stripe-orden')
   public async createOrden(@Body() ordenDTO: OrdenWDetalleCreateDTO) {
