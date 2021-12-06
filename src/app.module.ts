@@ -22,6 +22,9 @@ import { FarmaciaModule } from './app/farmacia/farmacia.module';
 import { MunicipioModule } from './app/municipio/municipio.module';
 import { ColoniaModule } from './app/colonia/colonia.module';
 import { MedicamentoModule } from './app/medicamento/medicamento.module';
+import { PagoModule } from './app/pago/pago.module';
+import { OrdenModule } from './app/orden/orden.module';
+import { OrdenDetalleModule } from './app/orden-detalle/orden-detalle.module';
 
 @Module({
   imports: [
@@ -36,6 +39,9 @@ import { MedicamentoModule } from './app/medicamento/medicamento.module';
     FarmaciaModule,
     MedicamentoModule,
     CapacitacionModule,
+    OrdenModule,
+    OrdenDetalleModule,
+    PagoModule,
     ConfigModule.forRoot({
       load: [configuration],
       isGlobal: true,

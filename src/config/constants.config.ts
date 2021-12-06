@@ -5,3 +5,5 @@ export const DATABASE_USERNAME = 'database.username';
 export const DATABASE_PASSWORD = 'database.password';
 export const DATABASE_DATABASE_NAME = 'database.database';
 export const JWT_SECRET = 'jwt.secret';
+export const STRIPE_API_KEY = 'stripe.apiKey';
+export const STRIPE_API_SECRET = 'stripe.apiSecret';

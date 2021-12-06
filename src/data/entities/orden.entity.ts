@@ -43,6 +43,12 @@ export class Orden {
   })
   tipoPago: TipoPago;
 
+  @Column({
+    type: 'varchar',
+    nullable: true,
+  })
+  stripeChargeId: string;
+
   @ManyToOne(() => Usuario, (user) => user.id, {
     nullable: false,
     eager: true,
@@ -51,11 +57,13 @@ export class Orden {
   usuario: Usuario;
 
   @ManyToOne(() => Repartidor, (repartidor) => repartidor.id, {
-    nullable: false,
+    nullable: true,
     eager: true,
   })
-  repartidor: Repartidor;
+  repartidor?: Repartidor;
 
-  @OneToMany(() => DetalleOrden, (detalleOrden) => detalleOrden.orden)
+  @OneToMany(() => DetalleOrden, (detalleOrden) => detalleOrden.orden, {
+    cascade: ['insert'],
+  })
   detallesOrdenes: DetalleOrden[];
 }
