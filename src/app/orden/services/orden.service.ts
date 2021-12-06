@@ -30,7 +30,6 @@ export class OrdenService {
       where: { usuario },
     });
     if (ordenes) {
-      console.log(ordenes);
       const ordenesDTO = this._mapper.toArrayDTO<FullOrdenReadDTO>(
         ordenes,
         FullOrdenReadDTO,
