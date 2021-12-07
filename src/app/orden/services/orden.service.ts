@@ -28,6 +28,7 @@ export class OrdenService {
     usuario.id = userId;
     const ordenes = await this._ordenRepository.find({
       where: { usuario },
+      order: { id: 'DESC' },
     });
     if (ordenes) {
       const ordenesDTO = this._mapper.toArrayDTO<FullOrdenReadDTO>(
