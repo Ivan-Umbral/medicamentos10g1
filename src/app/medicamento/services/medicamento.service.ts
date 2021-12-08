@@ -32,7 +32,7 @@ export class MedicamentoService {
     const medicamentos = await this._medicamentoRepository.find({
       take,
       skip,
-      where: { stock: MoreThan(0) },
+      where: { stock: MoreThan(1) },
     });
     if (medicamentos) {
       const medicamentosDTO = this._mapper.toArrayDTO<MedicamentoReadDTO>(
