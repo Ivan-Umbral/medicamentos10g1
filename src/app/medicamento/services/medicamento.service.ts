@@ -59,4 +59,11 @@ export class MedicamentoService {
       return null;
     }
   }
+
+  public async restarStock(id: number, cantidad: number): Promise<boolean> {
+    const medicamento = await this._medicamentoRepository.findOne(id);
+    const stock = medicamento.stock - cantidad;
+    const updaed = await this._medicamentoRepository.update(id, { stock });
+    return updaed.affected > 0;
+  }
 }

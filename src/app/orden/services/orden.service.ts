@@ -14,6 +14,7 @@ import { format } from 'date-fns';
 import { Usuario } from '../../../data/entities/usuario.entity';
 import { DetalleOrden } from '../../../data/entities/detalle-orden.entity';
 import { Medicamento } from '../../../data/entities/medicamento.entity';
+import { MedicamentoService } from '../../medicamento/services/medicamento.service';
 
 @Injectable()
 export class OrdenService {
@@ -21,6 +22,7 @@ export class OrdenService {
     @InjectRepository(Orden) private _ordenRepository: Repository<Orden>,
     private _mapper: MapperService,
     private _pagoService: PagoService,
+    private _medicamentoService: MedicamentoService,
   ) {}
 
   public async getOrdenesByUserId(userId: number): Promise<FullOrdenReadDTO[]> {
@@ -85,6 +87,10 @@ export class OrdenService {
         const ordenEntity = this.getOrderNestedObject(body, pagado);
         const orden = await this._ordenRepository.save(ordenEntity);
         if (orden) {
+          await this._medicamentoService.restarStock(
+            body.medicamentoId,
+            body.cantidad,
+          );
           const ordenDTO = this._mapper.toDTO<FullOrdenReadDTO>(
             orden,
             FullOrdenReadDTO,
