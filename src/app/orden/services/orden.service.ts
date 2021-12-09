@@ -15,6 +15,8 @@ import { Usuario } from '../../../data/entities/usuario.entity';
 import { DetalleOrden } from '../../../data/entities/detalle-orden.entity';
 import { Medicamento } from '../../../data/entities/medicamento.entity';
 import { MedicamentoService } from '../../medicamento/services/medicamento.service';
+import { Farmacia } from '../../../data/entities/farmacia.entity';
+import { OrdenFarmaciaReadDTO } from '../models/dto/orden-farmacia.dto';
 
 @Injectable()
 export class OrdenService {
@@ -40,6 +42,30 @@ export class OrdenService {
       return ordenesDTO;
     }
     return null;
+  }
+
+  public async getOrdenesByFarmaciaId(
+    farmaciaId: number,
+  ): Promise<OrdenFarmaciaReadDTO[]> {
+    try {
+      const ordenQuery = await this._ordenRepository
+        .createQueryBuilder('ordenes')
+        .innerJoinAndSelect('ordenes.detallesOrdenes', 'detalles-ordenes')
+        .innerJoinAndSelect('ordenes.usuario', 'usuarios')
+        .innerJoinAndSelect('detalles-ordenes.medicamento', 'medicamentos')
+        .innerJoinAndSelect('medicamentos.farmacia', 'farmacias')
+        .where('medicamentos.farmacia = :farmaciaId', { farmaciaId })
+        .getMany();
+      if (ordenQuery) {
+        const ordenesDTO = this._mapper.toArrayDTO<OrdenFarmaciaReadDTO>(
+          ordenQuery,
+          OrdenFarmaciaReadDTO,
+        );
+        return ordenesDTO;
+      }
+    } catch (error) {
+      return null;
+    }
   }
 
   public async getOrdenByUserId(

@@ -34,6 +34,18 @@ export class OrdenController {
     );
   }
 
+  @Get('farmacia/:farmaciaId')
+  public async getOrdenesByFarmaciaId(
+    @Param('farmaciaId', ParseIntPipe) farmaciaId: number,
+  ) {
+    const ordenes = await this._ordenService.getOrdenesByFarmaciaId(farmaciaId);
+    if (ordenes) return ordenes;
+    throw new HttpException(
+      'Something went wrong',
+      HttpStatus.INTERNAL_SERVER_ERROR,
+    );
+  }
+
   @Get('one/:usuarioId/:orderId')
   public async getOrdeneByUserId(
     @Param('usuarioId', ParseIntPipe) usuarioId: number,
